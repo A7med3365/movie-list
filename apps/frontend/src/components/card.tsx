@@ -1,13 +1,24 @@
 interface CardProps {
+  id: number;
   imageUrl: string;
   title: string;
   year: string;
   rating: string;
+  onClick: () => void;
 }
 
-export default function Card({ imageUrl, title, year, rating }: CardProps) {
+export default function Card({
+  imageUrl,
+  title,
+  year,
+  rating,
+  onClick,
+}: CardProps) {
   return (
-    <div className="overflow-hidden rounded-lg shadow-lg transform transition duration-300 hover:scale-105 w-32 sm:w-48 md:w-56 lg:w-48 h-full">
+    <div
+      className="overflow-hidden rounded-lg shadow-lg transform transition duration-300 hover:scale-105 w-32 sm:w-48 md:w-56 lg:w-48 h-full"
+      onClick={() => onClick()}
+    >
       <div className="h-48 sm:h-64 md:h-72 lg:h-64">
         <img
           src={imageUrl}
@@ -23,7 +34,7 @@ export default function Card({ imageUrl, title, year, rating }: CardProps) {
           <p className="text-xs text-gray-50 sm:text-sm">{year}</p>
         </div>
         <div className="text-sm font-bold text-yellow-400 sm:text-lg ml-2">
-          {rating}
+          {parseFloat(rating).toFixed(1)}
         </div>
       </div>
     </div>
