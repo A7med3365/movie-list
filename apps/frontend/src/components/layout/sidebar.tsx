@@ -40,9 +40,9 @@ const SidebarComponent = () => (
     <SidebarHeader>
       <SidebarSection className="max-lg:hidden">
         <SidebarItem href="/search">
-        <Avatar src={movieClapperboard} />
-        <SidebarLabel>Tailwind Labs</SidebarLabel>
-        {/* <ChevronDownIcon /> */}
+          <Avatar src={movieClapperboard} />
+          <SidebarLabel>Tailwind Labs</SidebarLabel>
+          {/* <ChevronDownIcon /> */}
         </SidebarItem>
       </SidebarSection>
       <SidebarSection className="max-lg:hidden">
@@ -62,25 +62,25 @@ const SidebarComponent = () => (
           <HomeIcon />
           <SidebarLabel>Home</SidebarLabel>
         </SidebarItem>
-        <SidebarItem href="/events">
+        <SidebarItem href="/movies">
           <FilmIcon />
           <SidebarLabel>Movies</SidebarLabel>
         </SidebarItem>
-        <SidebarItem href="/orders">
+        <SidebarItem href="/tv">
           <TvIcon />
           <SidebarLabel>TV Shows</SidebarLabel>
         </SidebarItem>
-        <SidebarItem href="/Posts">
+        <SidebarItem href="/posts">
           <ChatBubbleBottomCenterTextIcon />
           <SidebarLabel>Posts</SidebarLabel>
         </SidebarItem>
       </SidebarSection>
       <SidebarSection className="max-lg:hidden">
         <SidebarHeading>Featured stuff</SidebarHeading>
-        <SidebarItem href="/events/1">Bear Hug: Live in Concert</SidebarItem>
-        <SidebarItem href="/events/2">Viking People</SidebarItem>
-        <SidebarItem href="/events/3">Six Fingers — DJ Set</SidebarItem>
-        <SidebarItem href="/events/4">We All Look The Same</SidebarItem>
+        <SidebarItem href="/details/194764?type=tv">The Penguin</SidebarItem>
+        <SidebarItem href="/details/1396?type=tv">Breaking Bad</SidebarItem>
+        <SidebarItem href="/details/94605?type=tv">Arcane</SidebarItem>
+        <SidebarItem href="/details/88803?type=tv">Vinland Saga</SidebarItem>
       </SidebarSection>
       <SidebarSpacer />
       <SidebarSection>
