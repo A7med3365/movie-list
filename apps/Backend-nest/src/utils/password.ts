@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import { scrypt, randomBytes } from 'crypto';
 import { promisify } from 'util';
 
@@ -15,6 +16,8 @@ export class Password {
     const [hashedPassword, salt] = storedPassword.split('.');
     const buf = (await scryptAsync(suppliedPassword, salt, 64)) as Buffer;
 
+    // Logger.log(buf.toString('hex'));
+    // Logger.log(hashedPassword);
     return buf.toString('hex') === hashedPassword;
   }
 }

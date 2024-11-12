@@ -1,5 +1,6 @@
 const { NxAppWebpackPlugin } = require('@nx/webpack/app-plugin');
 const { join } = require('path');
+require('dotenv').config(); // Add this line
 
 module.exports = {
   output: {
