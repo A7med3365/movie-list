@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
-import { Password } from '../../utils/password'; // Adjust the path accordingly
+import { Password } from '../../utils/password';
+import { Media } from '../interfaces/Movie.interface';
 
 @Schema()
 export class User extends Document {
@@ -16,6 +17,8 @@ export class User extends Document {
   @Prop({ default: 1 })
   avatarIndex: number;
 
+  @Prop({ default: [] })
+  favorites: Media[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
@@ -24,6 +27,9 @@ UserSchema.pre('save', async function(next) {
     if (this.isModified('password')) {
         const hashed = await Password.toHash(this.get('password'));
         this.set('password', hashed);
+    }
+    if (this.isModified('favorites')) {
+        this.markModified('favorites');
     }
     next();
 });

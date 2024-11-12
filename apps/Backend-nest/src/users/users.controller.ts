@@ -11,10 +11,24 @@ import {
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { Media } from './interfaces/Movie.interface';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
+  @Post(':id/favorites/:mediaId')
+  async removeMediaFromFavorites(
+    @Param('id') id: string,
+    @Param('mediaId') mediaId: string
+  ) {
+    return this.usersService.removeMediaFromFavorites(id, Number(mediaId));
+  }
+
+  @Post(':id/favorites')
+  async addMediaToFavorites(@Param('id') id: string, @Body() media: Media) {
+    return this.usersService.addMediaToFavorites(id, media);
+  }
 
   @Post()
   @UsePipes(new ValidationPipe({ whitelist: true }))
