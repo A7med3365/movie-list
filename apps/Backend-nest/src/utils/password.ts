@@ -1,4 +1,3 @@
-import { Logger } from '@nestjs/common';
 import { scrypt, randomBytes } from 'crypto';
 import { promisify } from 'util';
 

@@ -28,7 +28,7 @@ export function verifyJwt(token: string): TokenPayload {
   }
   try {
     return jwt.verify(token, process.env.VITE_JWT_KEY) as TokenPayload;
-  } catch (error) {
+  } catch {
     throw new UnauthorizedException('Invalid token');
   }
 }
