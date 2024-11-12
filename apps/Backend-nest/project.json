@@ -1,0 +1,26 @@
+{
+  "name": "Backend-nest",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/Backend-nest/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "Backend-nest:build",
+        "runBuildTargetDependencies": false
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "Backend-nest:build:development"
+        },
+        "production": {
+          "buildTarget": "Backend-nest:build:production"
+        }
+      }
+    }
+  }
+}
