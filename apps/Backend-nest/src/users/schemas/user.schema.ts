@@ -27,6 +27,13 @@ export class User extends Document {
 
 export const UserSchema = SchemaFactory.createForClass(User);
 
+UserSchema.set('toJSON', {
+  transform: (doc, ret) => {
+    delete ret.password;
+    return ret;
+  },
+});
+
 UserSchema.pre('save', async function(next) {
     if (this.isModified('password')) {
         const hashed = await Password.toHash(this.get('password'));
