@@ -1,7 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Password } from '../../utils/password';
 import { Media } from '../interfaces/Movie.interface';
+import { Post } from '../../posts/schemas/post.schema';
 
 @Schema()
 export class User extends Document {
@@ -19,6 +20,9 @@ export class User extends Document {
 
   @Prop({ default: [] })
   favorites: Media[];
+
+  @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Post' }] })
+  posts: Post[];
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

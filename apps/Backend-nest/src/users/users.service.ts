@@ -31,6 +31,14 @@ export class UsersService {
     return this.userModel.findById(id).exec();
   }
 
+  async findOneWithPosts(id: string): Promise<User> {
+    const user = await this.userModel.findById(id).populate('posts').exec();
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
+    return user;
+  }
+
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.userModel.findById(id).exec();
     if (!user) {
@@ -63,7 +71,9 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
-    user.favorites = user.favorites.filter((media) => Number(media.id) !== mediaId);
+    user.favorites = user.favorites.filter(
+      (media) => Number(media.id) !== mediaId
+    );
     user.markModified('favorites');
     return user.save();
   }
