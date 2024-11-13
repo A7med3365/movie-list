@@ -7,17 +7,26 @@ import {
   Put,
   UsePipes,
   ValidationPipe,
+  Delete,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Media } from './interfaces/Movie.interface';
+import { AddFavDto } from './dto/add-fav.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post(':id/favorites/:mediaId')
+  @Get(':id/favorites/:mediaId')
+  async isMediaInFavorites(
+    @Param('id') id: string,
+    @Param('mediaId') mediaId: string
+  ) {
+    return this.usersService.isMediaInFavorites(id, Number(mediaId));
+  }
+
+  @Delete(':id/favorites/:mediaId')
   async removeMediaFromFavorites(
     @Param('id') id: string,
     @Param('mediaId') mediaId: string
@@ -26,7 +35,8 @@ export class UsersController {
   }
 
   @Post(':id/favorites')
-  async addMediaToFavorites(@Param('id') id: string, @Body() media: Media) {
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  async addMediaToFavorites(@Param('id') id: string, @Body() media: AddFavDto) {
     return this.usersService.addMediaToFavorites(id, media);
   }
 

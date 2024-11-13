@@ -1,7 +1,6 @@
 import {
   BadRequestException,
   Injectable,
-  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -9,7 +8,7 @@ import { Model } from 'mongoose';
 import { User } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { Media } from './interfaces/Movie.interface';
+import { AddFavDto } from './dto/add-fav.dto';
 
 @Injectable()
 export class UsersService {
@@ -48,7 +47,7 @@ export class UsersService {
     return user.save();
   }
 
-  async addMediaToFavorites(userId: string, media: Media): Promise<User> {
+  async addMediaToFavorites(userId: string, media: AddFavDto): Promise<User> {
     const user = await this.userModel.findById(userId).exec();
     if (!user) {
       throw new NotFoundException('User not found');
@@ -76,5 +75,15 @@ export class UsersService {
     );
     user.markModified('favorites');
     return user.save();
+  }
+
+  async isMediaInFavorites(userId: string, mediaId: number): Promise<{ result: boolean }> {
+    const user = await this.userModel.findById(userId).exec();
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    return {
+      result: user.favorites.some((media) => Number(media.id) === mediaId),
+    };
   }
 }
