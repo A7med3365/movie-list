@@ -1,0 +1,20 @@
+# Use the official Node.js 18 image
+FROM node:18-alpine
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json from the backend app
+COPY dist/apps/Backend-nest/package*.json ./
+
+# Install only production dependencies
+RUN npm install --omit=dev
+
+# Copy the built application files
+COPY dist/apps/Backend-nest ./
+
+# Expose the application port
+EXPOSE 3000
+
+# Start the application
+CMD ["node", "main.js"]
