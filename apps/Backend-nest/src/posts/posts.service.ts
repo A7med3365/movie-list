@@ -25,11 +25,11 @@ export class PostsService {
   }
 
   async findAll(): Promise<Post[]> {
-    return this.postModel.find().exec();
+    return this.postModel.find().populate('user').exec();
   }
 
   async findOne(id: string): Promise<Post> {
-    const post = await this.postModel.findById(id).exec();
+    const post = await this.postModel.findById(id).populate('user').exec();
     if (!post) {
       throw new NotFoundException(`Post with ID ${id} not found`);
     }
