@@ -32,7 +32,7 @@ export class AuthService {
         username: user.username,
       };
       const token = generateJwt(tokenPayload);
-      res.cookie('jwt', token, { httpOnly: true });
+      res.cookie('jwt', token, { httpOnly: true, maxAge: 8 * 60 * 60 * 1000 }); // 8 hours
     } else {
       throw new UnauthorizedException('Invalid password');
     }
