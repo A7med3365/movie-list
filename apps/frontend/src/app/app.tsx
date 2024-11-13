@@ -12,6 +12,7 @@ import SignIn from '../pages/signin';
 import Details from '../pages/details';
 import FavoritePage from '../pages/favorite';
 import SignUp from '../pages/signup';
+import NotFound from '../pages/notFound';
 
 export function App() {
   return (
@@ -25,11 +26,12 @@ export function App() {
           <Route path="/tv" element={<TvPage />} />
           <Route path="/posts" element={<PostsPage />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path='/signup' element={<SignUp />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/details/:id" element={<Details />} />
           <Route path="/favorites" element={<FavoritePage />} />
-          <Route path='/posts' element={<PostsPage />} />
+          <Route path="/posts" element={<PostsPage />} />
           <Route path="/" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </SidebarLayout>
     </Router>
