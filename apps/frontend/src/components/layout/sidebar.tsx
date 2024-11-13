@@ -54,7 +54,7 @@ const SidebarComponent = () => {
   });
 
   useEffect(() => {
-    // console.log(currentUser);
+    console.log({ currentUser });
   }, [currentUser]);
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const SidebarComponent = () => {
             <MagnifyingGlassIcon />
             <SidebarLabel>Search</SidebarLabel>
           </SidebarItem>
-          <SidebarItem href="/inbox">
+          <SidebarItem href={isSignedIn ? "/favorites" : "/signin"}>
             <StarIcon />
             <SidebarLabel>Favorites</SidebarLabel>
           </SidebarItem>

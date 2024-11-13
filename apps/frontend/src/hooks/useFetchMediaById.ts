@@ -101,6 +101,7 @@ export interface MediaItem {
   title: string;
   year: string;
   rating: string;
+  type?: string;
 }
 
 interface Error {

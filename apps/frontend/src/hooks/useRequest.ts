@@ -7,6 +7,7 @@ interface UseRequestProps {
   method: Method;
   body?: Record<string, any>;
   onSuccess?: (response: any) => void;
+  onError?: (errors: { message: string }[]) => void;
   loading?: boolean;
 }
 
@@ -22,6 +23,7 @@ export default function useRequest({
   method,
   body = {},
   onSuccess,
+  onError,
   loading = true,
 }: UseRequestProps): UseRequestReturn {
   const [errors, setErrors] = useState<{ message: string }[] | null>(null);
@@ -46,6 +48,9 @@ export default function useRequest({
     } catch (err: any) {
       console.log(err.response.data.errors);
       setErrors(err.response.data.errors);
+      if (onError) {
+        onError(err.response.data.errors);
+      }
     } finally {
       setLoading(false);
     }

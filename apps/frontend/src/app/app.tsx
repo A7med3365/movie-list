@@ -10,6 +10,7 @@ import TvPage from '../pages/tv';
 import PostsPage from '../pages/posts';
 import SignIn from '../pages/signin';
 import Details from '../pages/details';
+import FavoritePage from '../pages/favorite';
 
 export function App() {
   return (
@@ -24,6 +25,7 @@ export function App() {
           <Route path="/posts" element={<PostsPage />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/details/:id" element={<Details />} />
+          <Route path="/favorites" element={<FavoritePage />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </SidebarLayout>

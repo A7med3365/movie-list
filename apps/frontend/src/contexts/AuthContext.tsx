@@ -2,13 +2,14 @@ import { createContext, useState } from 'react';
 import { ReactNode } from 'react';
 import useRequest from '../hooks/useRequest';
 import { useEffect } from 'react';
+import { MediaItem } from '../hooks/useFetchMediaById';
 
 interface user {
   id: string;
   email: string;
   username: string;
   avatarIndex: number;
-  //   favorites: string[];
+  favorites: MediaItem[];
   //   posts: string[];
 }
 
@@ -43,7 +44,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   });
 
   useEffect(() => {
-    checkCurrentUser();
+    async function check() {
+      await checkCurrentUser();
+    }
+    check();
   }, []);
 
   const value = {

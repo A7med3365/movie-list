@@ -21,7 +21,7 @@ export default function Card({
     >
       <div className="h-48 sm:h-64 md:h-72 lg:h-64">
         <img
-          src={imageUrl}
+          src={imageUrl.includes('https://image.tmdb.org/t/p/w500') ? imageUrl : `https://image.tmdb.org/t/p/w500${imageUrl}`}
           alt={title}
           className="h-full w-full object-cover rounded-t-lg"
         />

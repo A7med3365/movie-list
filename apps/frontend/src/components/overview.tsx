@@ -6,6 +6,10 @@ import {
   DescriptionTerm,
 } from '../components/catalyst-ui-kit/description-list';
 import { languages } from '../utils/languages';
+import useRequest from '../hooks/useRequest';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
+import Loading from 'react-loading';
 
 interface OverviewProps {
   media: Movie | TVShow;
@@ -22,6 +26,51 @@ function isMovie(media: Movie | TVShow): media is Movie {
 }
 
 export default function Overview({ media }: OverviewProps) {
+  const [isInFavorites, setIsInFavorites] = useState(false);
+  const { currentUser, isSignedIn } = useContext(AuthContext);
+
+  const { doRequest: isMediaInFavorites } = useRequest({
+    url: `/api/users/${currentUser?.id}/favorites/${media.id}`,
+    method: 'get',
+    onSuccess: (res) => {
+      setIsInFavorites(res.data.result);
+    },
+    loading: false,
+  });
+
+  const { doRequest: addToFavorites, isLoading: addingLoading } = useRequest({
+    url: `/api/users/${currentUser?.id}/favorites`,
+    method: 'post',
+    body: {
+      id: media.id,
+      title: isMovie(media) ? media.title : media.name,
+      imageUrl: media.poster_path,
+      year: isMovie(media) ? media.release_date : media.first_air_date,
+      rating: media.vote_average,
+      type: isMovie(media) ? 'movie' : 'tv',
+    },
+    onSuccess: () => {
+      setIsInFavorites(true);
+    },
+    loading: false,
+  });
+
+  const { doRequest: removeFromFavorites, isLoading: removingLoading } =
+    useRequest({
+      url: `/api/users/${currentUser?.id}/favorites/${media.id}`,
+      method: 'delete',
+      onSuccess: () => {
+        setIsInFavorites(false);
+      },
+      loading: false,
+    });
+
+  useEffect(() => {
+    console.log({ isSignedIn });
+    if (currentUser) {
+      isMediaInFavorites();
+    }
+  }, [currentUser]);
   return (
     <div>
       <div className="mx-auto max-w-2xl px-4 pb-24 sm:px-6 sm:pb-32 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
@@ -78,9 +127,9 @@ export default function Overview({ media }: OverviewProps) {
         </div>
 
         {/* Additional Details */}
-        <div className="mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start">
+        <div className="mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start ">
           <div className="sm:flex sm:justify-between">
-            <DescriptionList>
+            <DescriptionList className="w-full">
               <DescriptionTerm>Status</DescriptionTerm>
               <DescriptionDetails>{media.status}</DescriptionDetails>
 
@@ -132,9 +181,23 @@ export default function Overview({ media }: OverviewProps) {
           </div>
           <div className="mt-10">
             <button
-              className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+              className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+              disabled={!isSignedIn || addingLoading || removingLoading}
+              onClick={() => {
+                if (isInFavorites) {
+                  removeFromFavorites();
+                } else {
+                  addToFavorites();
+                }
+              }}
             >
-              Add to Favorites
+              {addingLoading || removingLoading ? (
+                <Loading type="spin" color="white" height={20} width={20} />
+              ) : isInFavorites ? (
+                'Remove from Favorites'
+              ) : (
+                'Add to Favorites'
+              )}
             </button>
           </div>
         </div>
