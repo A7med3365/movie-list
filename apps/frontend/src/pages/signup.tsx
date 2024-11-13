@@ -4,6 +4,7 @@ import useRequest from '../hooks/useRequest';
 import movieClapperboard from '../assets/movie-clapperboard.svg';
 import { avatars } from '../assets/avatar/avatar';
 import Loading from 'react-loading';
+import { useState } from 'react';
 
 export default function SignUp() {
   const {
@@ -30,6 +31,8 @@ export default function SignUp() {
     onSuccess: () => navigate('/signin'),
     loading: false,
   });
+
+  const [selectedAvatar, setSelectedAvatar] = useState<number | null>(null);
 
   const onSubmit = async (data: FormData) => {
     data.avatarIndex = parseInt(data.avatarIndex as unknown as string, 10);
@@ -139,19 +142,22 @@ export default function SignUp() {
             </label>
             <div className="mt-2 flex space-x-4">
               {avatars.map((avatar, index) => (
-                <label key={index}>
+                <label key={index} className="cursor-pointer">
                   <input
                     type="radio"
                     value={index}
                     {...register('avatarIndex', {
                       required: 'Avatar is required',
                     })}
-                    className="hidden"
+                    className="sr-only"
+                    onChange={() => setSelectedAvatar(index)}
                   />
                   <img
                     src={avatar}
                     alt={`Avatar ${index + 1}`}
-                    className="w-16 h-16 rounded-full cursor-pointer border-2 border-transparent hover:border-indigo-500"
+                    className={`w-16 h-16 rounded-full border-2 ${
+                      selectedAvatar === index ? 'border-indigo-500' : 'border-transparent'
+                    } hover:border-indigo-500`}
                   />
                 </label>
               ))}
